@@ -19,7 +19,8 @@ export default defineConfig({
   build: {
     watch: {},
     outDir: path.resolve(__dirname, "../dist/render"),
-    minify: true,
+    sourcemap: true,
+    minify: false,
     assetsInlineLimit: 1048576,
     emptyOutDir: true,
     chunkSizeWarningLimit: 2048,

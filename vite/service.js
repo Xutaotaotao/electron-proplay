@@ -81,7 +81,7 @@ const mainDev = {
               spawnProcess = null;
             }
 
-            spawnProcess = spawn(String(electronPath), ['.']);
+            spawnProcess = spawn(String(electronPath), ['--inspect','.']);
 
             if (spawnProcess) {
               spawnProcess.stdout.on('data', (d) => {

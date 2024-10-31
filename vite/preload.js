@@ -19,6 +19,7 @@ export default defineConfig({
   resolve: sharedResolve,
   build: {
     outDir: path.resolve(__dirname, "../dist/preload"),
+    sourcemap: true,
     minify: false,
     lib: {
       entry: path.resolve(__dirname, "../src/preload/index.ts"),
