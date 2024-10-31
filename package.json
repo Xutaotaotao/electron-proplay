@@ -1,15 +1,22 @@
 {
   "name": "electron-proplay",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/main/index.cjs",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "dev": "node ./scripts/dev.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@ant-design/icons-svg": "^4.4.2",
     "@eslint/js": "^9.13.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react-swc": "^3.7.1",
+    "antd": "^5.21.6",
     "electron": "^33.0.2",
     "eslint": "^9.13.0",
     "eslint-plugin-react": "^7.37.2",
