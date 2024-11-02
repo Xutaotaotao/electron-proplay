@@ -1,7 +1,14 @@
 import React from "react"
 
 const App = () => {
-  return <div>Hello Vite + Electron</div>
+  const openUrlByDefaultBrowser = () => {
+    window.electronAPI.openUrlByDefaultBrowser('https://www.baidu.com')
+  }
+  return <div>
+    <h1>Hello Vite + Electron</h1>
+
+    <button onClick={openUrlByDefaultBrowser}>openUrlByDefaultBrowser</button>
+  </div>
 } 
 
 export default App

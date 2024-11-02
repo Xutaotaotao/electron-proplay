@@ -1,5 +1,7 @@
-import { contextBridge } from "electron";
+import { contextBridge,ipcRenderer } from "electron";
 
-contextBridge.exposeInMainWorld("EP", {
-  log: (data:string) => {console.log(data)}
+contextBridge.exposeInMainWorld("electronAPI", {
+  openUrlByDefaultBrowser: (url:string) => ipcRenderer.send('openUrlByDefaultBrowser', url)
 })
+
+

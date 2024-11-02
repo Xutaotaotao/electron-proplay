@@ -1,6 +1,6 @@
 import { BrowserWindow,app } from "electron";
 import { resolve,join } from "path";
-
+import { initIpc } from "./ipc";
 
 const createWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -23,6 +23,7 @@ const createWindow = () => {
 
 const main = () => {
   createWindow();
+  initIpc();
 }
 
 app.whenReady().then(() => {
