@@ -21,6 +21,7 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "../dist/main"),
     minify: false,
     sourcemap: true,
+    watch: {},
     lib: {
       entry: path.resolve(__dirname, "../src/main/index.ts"),
       formats: ["cjs"],
