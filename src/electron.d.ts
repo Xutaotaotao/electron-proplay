@@ -4,6 +4,8 @@ export interface IElectronAPI {
   communicateWithEachOtherWithPromise: (msg: string) => Promise<string>,
   communicateWithEachOtherSendMsg: (msg: string) => Promise<string>,
   communicateWithEachOtherSendSyncMsg: (msg: string) => string,
+  onUpdateCounterFormMain: (callback: (value: number) => void) => void,
+  updateCounterCallback: (value: number) => void,
 }
 
 declare global {

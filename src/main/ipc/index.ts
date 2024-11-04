@@ -12,9 +12,13 @@ const initIpcOn = () => {
   ipcMain.on('communicateWithEachOtherSendSyncMsg', (event:IpcMainEvent, msg:string) => {
     event.returnValue = `I got ${msg},ok`
   })
+  ipcMain.on('counterValueCallback', (event:IpcMainEvent, value:string) => {
+    console.log('counterValueCallback',value)
+  })
 }
 
 const initIpcHandle = () => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ipcMain.handle('communicateWithEachOtherWithPromise', (event: IpcMainInvokeEvent, ...args: any[]): Promise<string> => {
     const msg = args[0];
     return Promise.resolve(`I got ${msg}, ok`);
