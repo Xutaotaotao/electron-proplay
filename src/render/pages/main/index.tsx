@@ -13,11 +13,20 @@ const Main = () => {
     })
   }
   const communicateWithEachOtherSendMsg = () => {
-    window.electronAPI.communicateWithEachOtherSendMsg("Hello");
+    setInterval(() => {
+      window.electronAPI.communicateWithEachOtherSendMsg("Hello");
+    },200)
   };
   const communicateWithEachOtherSendMsgSendSync = () => {
     const msg = window.electronAPI.communicateWithEachOtherSendSyncMsg("Hello sync");
     console.log(msg)
+  }
+  const mainSendMsgToWork = () => {
+    window.electronAPI.mainSendMsgToWork("Hello work");
+  }
+
+  const mainSendMsgToWorkByMessagePort = () => {
+    window.electronAPI.mainMessagePortSend("Hello work, I am main,send by message port");
   }
 
   useEffect(() => {
@@ -28,6 +37,12 @@ const Main = () => {
         return res
       })
     });
+    window.electronAPI.onCommunicateWithEachOtherReply((value: string) => {
+      console.log(value)
+    })
+    window.electronAPI.mainMessagePort((value) => {
+      console.log(value)
+    })
   },[]);
 
 
@@ -56,6 +71,18 @@ const Main = () => {
     </div>
 
     <div>{count}</div>
+
+    <div>
+      <button onClick={mainSendMsgToWork}>
+      mainSendMsgToWork
+      </button>
+    </div>
+
+    <div>
+      <button onClick={mainSendMsgToWorkByMessagePort}>
+      mainSendMsgToWorkByMessagePort
+      </button>
+    </div>
   </div>
 }
 

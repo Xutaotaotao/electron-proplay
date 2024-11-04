@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, app } from "electron";
+import { BrowserWindow, Menu, MessageChannelMain, app } from "electron";
 import { resolve, join } from "path";
 import { initIpc } from "./ipc";
 
@@ -42,10 +42,21 @@ const initMenu = (mainWindow: BrowserWindow) => {
 };
 
 const main = () => {
+  const { port1, port2 } = new MessageChannelMain()
   const mainWindow = createWindow('main');
-  createWindow('work')
+  const workWindow = createWindow('work')
   initMenu(mainWindow);
-  initIpc();
+  initIpc({
+    mainWindow,
+    workWindow,
+  });
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.webContents.postMessage('portMain', null, [port1])
+  })
+
+  workWindow.once('ready-to-show', () => {
+    workWindow.webContents.postMessage('portWork', null, [port2])
+  })
 };
 
 app.whenReady().then(() => {

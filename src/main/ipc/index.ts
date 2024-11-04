@@ -1,19 +1,28 @@
-import { ipcMain, IpcMainEvent, IpcMainInvokeEvent, shell } from "electron"
+import { BrowserWindow, ipcMain, IpcMainEvent, IpcMainInvokeEvent, shell } from "electron"
+
+
+export interface IpcMainWindow {
+  mainWindow: BrowserWindow,
+  workWindow: BrowserWindow
+}
 
 const openUrlByDefaultBrowser = (e:IpcMainEvent, url: string, options?: Electron.OpenExternalOptions) => {
   shell.openExternal(url, options)
 }
 
-const initIpcOn = () => {
+const initIpcOn = (winodws:IpcMainWindow) => {
   ipcMain.on('openUrlByDefaultBrowser', openUrlByDefaultBrowser)
   ipcMain.on('communicateWithEachOtherSendMsg', (event:IpcMainEvent, msg:string) => {
-    event.reply('communicateWithEachOtherReply', `I got ${msg},ok`)
+    event.reply('communicateWithEachOtherReply', msg)
   })
   ipcMain.on('communicateWithEachOtherSendSyncMsg', (event:IpcMainEvent, msg:string) => {
     event.returnValue = `I got ${msg},ok`
   })
   ipcMain.on('counterValueCallback', (event:IpcMainEvent, value:string) => {
     console.log('counterValueCallback',value)
+  })
+  ipcMain.on('mainSendMsgToWork', (event:IpcMainEvent, msg:string) => {
+    winodws.workWindow.webContents.send('workSendMsgToMain', msg)
   })
 }
 
@@ -25,7 +34,8 @@ const initIpcHandle = () => {
   });
 };
 
-export const initIpc = () => {
-  initIpcOn()
+
+export const initIpc = (winodws:IpcMainWindow) => {
+  initIpcOn(winodws)
   initIpcHandle()
 }
