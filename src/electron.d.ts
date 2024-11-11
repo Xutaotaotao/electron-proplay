@@ -12,6 +12,8 @@ export interface IElectronAPI {
   workMessagePort: (callback: (msg: string) => void) => void,
   mainMessagePortSend: (msg: string) => void,
   onCommunicateWithEachOtherReply: (callback: (msg: string) => void) => void,
+  Elog: (type:LOG_TYPE,msg:string) => void,
+  Log4: (type:LOG_TYPE,msg:string) => void,
 }
 
 declare global {

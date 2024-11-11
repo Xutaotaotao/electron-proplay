@@ -1,3 +1,4 @@
+import { LOG_TYPE } from "@/common/log";
 import { contextBridge,ipcRenderer } from "electron";
 
 type OnUpdateCounterFormMainCallback = (value: number) => void;
@@ -31,6 +32,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
         callback(messageEvent.data)
       }
     })
+  },
+  Elog: (type: LOG_TYPE, value: string) => {
+    ipcRenderer.send('Elog', { type, value })
+  },
+  Log4: (type: LOG_TYPE, value: string) => {
+    ipcRenderer.send('Log4', { type, value })
   }
 })
 

@@ -1,3 +1,4 @@
+import { Elog,Log4 } from "@/common/log"
 import React,{useEffect, useState} from "react"
 
 const Main = () => {
@@ -9,7 +10,7 @@ const Main = () => {
   }
   const communicateWithEachOtherSendMsgPromise = () => {
     window.electronAPI.communicateWithEachOtherWithPromise("Hello Promise").then((msg: string) => {
-      console.log(msg)
+      Elog.info(msg)
     })
   }
   const communicateWithEachOtherSendMsg = () => {
@@ -19,7 +20,7 @@ const Main = () => {
   };
   const communicateWithEachOtherSendMsgSendSync = () => {
     const msg = window.electronAPI.communicateWithEachOtherSendSyncMsg("Hello sync");
-    console.log(msg)
+    Elog.info(msg)
   }
   const mainSendMsgToWork = () => {
     window.electronAPI.mainSendMsgToWork("Hello work");
@@ -30,6 +31,7 @@ const Main = () => {
   }
 
   useEffect(() => {
+    Log4.info('main')
     window.electronAPI.onUpdateCounterFormMain((value: number) => {
       setCount((pre) => {
         const res = pre + value
@@ -38,10 +40,10 @@ const Main = () => {
       })
     });
     window.electronAPI.onCommunicateWithEachOtherReply((value: string) => {
-      console.log(value)
+      Elog.info(value)
     })
     window.electronAPI.mainMessagePort((value) => {
-      console.log(value)
+      Elog.info(value+'')
     })
   },[]);
 
