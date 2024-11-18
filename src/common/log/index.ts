@@ -23,17 +23,18 @@ const Logger4Instance = () => {
   return logger4Instance;
 }
 
-const parseLog = (params: any[]): string => {
-  return params.map(param => {
-    if (typeof param === 'string') {
-      return param;
-    } else if (param instanceof Error) {
-      return param.stack || param.message;
-    } else {
+const parseLog = (param: any): string => {
+  if (typeof param === 'string') {
+    return param;
+  } else if (param instanceof Error) {
+    return param.stack || param.message;
+  } else {
+    try {
       return JSON.stringify(param);
-      JSON.parse
+    } catch (error) {
+      return param.toString();
     }
-  }).join(" ");
+  }
 }
 
 export const Elog = {
