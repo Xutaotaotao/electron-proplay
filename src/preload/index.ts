@@ -38,6 +38,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
   Log4: (type: LOG_TYPE, value: string) => {
     ipcRenderer.send('Log4', { type, value })
+  },
+  openNewWindow: (url:string) => {
+    ipcRenderer.invoke('openNewWindow',url)
+  },
+  openNewWindowByDefaultHandle: (url:string) => {
+    ipcRenderer.invoke('openNewWindowByDefaultHandle',url)
   }
 })
 

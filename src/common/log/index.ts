@@ -23,18 +23,38 @@ const Logger4Instance = () => {
   return logger4Instance;
 }
 
+const formatDateWithMilliseconds = (date: Date) => {
+  const padZero = (num:number, size:number) => {
+    let s = num.toString();
+    while (s.length < size) s = '0' + s;
+    return s;
+  };
+
+  const year = date.getFullYear();
+  const month = padZero(date.getMonth() + 1, 2);
+  const day = padZero(date.getDate(), 2);
+  const hours = padZero(date.getHours(), 2);
+  const minutes = padZero(date.getMinutes(), 2);
+  const seconds = padZero(date.getSeconds(), 2);
+  const milliseconds = padZero(date.getMilliseconds(), 3);
+
+  return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
+}
+
 const parseLog = (param: any): string => {
+  let logString = ''
   if (typeof param === 'string') {
-    return param;
+    logString = param;
   } else if (param instanceof Error) {
-    return param.stack || param.message;
+    logString = param.stack || param.message;
   } else {
     try {
-      return JSON.stringify(param);
+      logString = JSON.stringify(param);
     } catch (error) {
-      return param.toString();
+      logString = param.toString();
     }
   }
+  return `${formatDateWithMilliseconds(new Date())} - ${logString}`
 }
 
 export const Elog = {
@@ -73,7 +93,7 @@ export const Elog = {
 }
 
 export const Log4 = {
-  info: (value: any) => {
+  info: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Log4('info',parseLog(value))
       console.info(value)

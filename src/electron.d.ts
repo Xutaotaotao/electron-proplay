@@ -14,6 +14,8 @@ export interface IElectronAPI {
   onCommunicateWithEachOtherReply: (callback: (msg: string) => void) => void,
   Elog: (type:LOG_TYPE,msg:string) => void,
   Log4: (type:LOG_TYPE,msg:string) => void,
+  openNewWindow: (url:string) => void,
+  openNewWindowByDefaultHandle: (url:string) => void
 }
 
 declare global {

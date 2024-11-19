@@ -1,5 +1,7 @@
-import { Elog, LOG_PARAMS,Log4 } from "@/common/log"
 import { BrowserWindow, ipcMain, IpcMainEvent, IpcMainInvokeEvent, shell } from "electron"
+import { Elog, LOG_PARAMS,Log4 } from "@/common/log"
+import { join } from "path"
+import { getOpenUrl, openWindow } from "../window"
 
 export interface IpcMainWindow {
   mainWindow: BrowserWindow,
@@ -72,6 +74,28 @@ const initIpcHandle = () => {
     const msg = args[0];
     return Promise.resolve(`I got ${msg}, ok`);
   });
+  ipcMain.handle('openNewWindow', (event: IpcMainInvokeEvent, url: string) => {
+    openWindow({
+      width: 800,
+      height: 600,
+      webPreferences: {
+        preload: join(__dirname, "../preload/index.cjs"),
+      },
+      url,
+      brandNew: true,
+    });
+  })
+  ipcMain.handle('openNewWindowByDefaultHandle', (event: IpcMainInvokeEvent, url: string) => {
+    const win = new BrowserWindow({
+      width: 800,
+      height: 600,
+      webPreferences: {
+        preload: join(__dirname, "../preload/index.cjs"),
+      },
+    });
+    const newUrl = getOpenUrl(url)
+    win.loadURL(newUrl);
+  })
 };
 
 
