@@ -31,9 +31,9 @@ const main = async () => {
     url: `/main`,
   });
 
-  // if (import.meta.env.MODE === "dev") {
-  //   mainWindow.webContents.openDevTools({ mode: "detach", activate: true });
-  // }
+  if (import.meta.env.MODE === "dev") {
+    mainWindow.webContents.openDevTools({ mode: "detach", activate: true });
+  }
 
   const workWindow =openWindow({
     width: 800,

@@ -1,5 +1,6 @@
 import { Elog, Log4 } from "@/common/log";
 import React, { useEffect, useState } from "react";
+import Dexie from 'dexie';
 
 const Main = () => {
   const [count, setCount] = useState(0);
@@ -60,6 +61,28 @@ const Main = () => {
     openWindows();
   };
 
+
+  const testDexie = async () => {
+    console.log('Testing Dexie...');
+    // 创建数据库
+    const db: any = new Dexie('TestDatabase');
+    db.version(1).stores({
+      test: '++id,value' // 自增 id 和 value
+    });
+  
+    console.time('Dexie Insert');
+    // 批量插入数据
+    const data = Array.from({ length: 10000 }, (_, i) => ({ value: `Data ${i}` }));
+    await db.test.bulkAdd(data);
+    console.timeEnd('Dexie Insert');
+  
+    console.time('Dexie Query');
+    // 查询数据
+    const allData = await db.test.toArray();
+    console.log(allData);
+    console.timeEnd('Dexie Query');
+  }
+
   useEffect(() => {
     Log4.info("main");
     window.electronAPI.onUpdateCounterFormMain((value: number) => {
@@ -75,6 +98,10 @@ const Main = () => {
     window.electronAPI.mainMessagePort((value) => {
       Elog.info(value + "");
     });
+    setTimeout(() => {
+      testDexie();
+    }, 3000);
+    
   }, []);
 
   return (
