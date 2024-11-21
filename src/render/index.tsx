@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import Main from "./pages/main";
 import Work from "./pages/work";
+import TestWindow from "./pages/testWindow";
+import PreWindow from "./pages/preWindow";
 import App from "./app";
 
 
@@ -23,6 +25,14 @@ const router = createHashRouter([
       {
         path: "work",
         element: <Work />,
+      },
+      {
+        path: "testWindow",
+        element: <TestWindow />,
+      },
+      {
+        path: "preWindow/:id",
+        element: <PreWindow />,
       },
     ],
   },
