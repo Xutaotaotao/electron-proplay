@@ -80,10 +80,14 @@ class WindowPoolManager {
     if (idData && this.windowPools.has(idData) && !windowOptions.brandNew) {
       const win = this.windowPools.get(idData);
       if (win) {
-        win.show();
-        win.moveTop();
-        win.focus();
-        return win;
+        if (windowOptions.show === false) {
+          return win;
+        } else {
+          win.show();
+          win.moveTop();
+          win.focus();
+          return win;
+        }
       }
     } else {
       windowEntry = this.usePreWindow();
@@ -94,10 +98,14 @@ class WindowPoolManager {
     }
 
     const { win } = windowEntry;
-    win.show();
-    win.moveTop();
-    win.focus();
     win.loadURL(windowOptions.url);
+    if (windowOptions.show === false) {
+      // nothing to do
+    } else {
+      win.show();
+      win.moveTop();
+      win.focus();
+    }
 
     this.windowPools.set(idData, win);
 

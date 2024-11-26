@@ -1,8 +1,8 @@
 import React from "react"
-import { Outlet } from "react-router-dom"
+import Layout from "./layout"
 
 const App = () => {
-  return <Outlet />
+  return <Layout />
 }
 
 export default App

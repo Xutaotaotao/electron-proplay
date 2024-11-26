@@ -41,7 +41,7 @@ const formatDateWithMilliseconds = (date: Date) => {
   return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}.${milliseconds}`;
 }
 
-const parseLog = (param: any): string => {
+const parseLog = (param: any,showTime = false): string => {
   let logString = ''
   if (typeof param === 'string') {
     logString = param;
@@ -54,38 +54,38 @@ const parseLog = (param: any): string => {
       logString = param.toString();
     }
   }
-  return `${formatDateWithMilliseconds(new Date())} - ${logString}`
+  return showTime ? `${formatDateWithMilliseconds(new Date())} - ${logString}` : logString
 }
 
 export const Elog = {
-  info: (value: any) => {
+  info: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Elog('info',parseLog(value))
-      console.info(value)
+      console.info(parseLog(value,true))
     } else {
       ElectronLoggerInstance().info(parseLog(value))
     }
   },
-  warn: (value: any) => {
+  warn: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Elog('warn',parseLog(value))
-      console.warn(value)
+      console.warn(parseLog(value,true))
     } else {
       ElectronLoggerInstance().warn(parseLog(value))
     }
   },
-  error: (value: any) => {
+  error: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Elog('error',parseLog(value))
-      console.error(value)
+      console.error(parseLog(value,true))
     } else {
       ElectronLoggerInstance().error(parseLog(value))
     }
   },
-  debug: (value: any) => {
+  debug: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Elog('debug',parseLog(value))
-      console.debug(value)
+      console.debug(parseLog(value,true))
     } else {
       ElectronLoggerInstance().debug(parseLog(value))
     }
@@ -96,31 +96,31 @@ export const Log4 = {
   info: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Log4('info',parseLog(value))
-      console.info(value)
+      console.info(parseLog(value,true))
     } else {
       Logger4Instance().info(value)
     }
   },
-  warn: (value: any) => {
+  warn: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Log4('warn',parseLog(value))
-      console.warn(value)
+      console.warn(parseLog(value,true))
     } else {
       Logger4Instance().warn(value)
     }
   },
-  error: (value: any) => {
+  error: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Log4('error',parseLog(value))
-      console.error(value)
+      console.error(parseLog(value,true))
     } else {
       Logger4Instance().error(value)
     }
   },
-  debug: (value: any) => {
+  debug: (...value: any) => {
     if (import.meta.env.VITE_CURRENT_RUN_MODE === "render") {
       window.electronAPI.Log4('debug',parseLog(value))
-      console.debug(value)
+      console.debug(parseLog(value,true))
     } else {
       Logger4Instance().debug(value)
     }

@@ -1,4 +1,7 @@
 // electron.d.ts
+import { LOG_TYPE } from "@/common/log";
+import { queryParam,insertParam,updateParam,deleteParam } from "@/common/db";
+
 export interface IElectronAPI {
   openUrlByDefaultBrowser: (url: string, options?: Electron.OpenExternalOptions) => Promise<void>,
   communicateWithEachOtherWithPromise: (msg: string) => Promise<string>,
@@ -15,7 +18,12 @@ export interface IElectronAPI {
   Elog: (type:LOG_TYPE,msg:string) => void,
   Log4: (type:LOG_TYPE,msg:string) => void,
   openNewWindow: (url:string) => void,
-  openNewWindowByDefaultHandle: (url:string) => void
+  openNewWindowByDefaultHandle: (url:string) => void,
+  onTestSend: (callback: (msg: number[]) => void) => void,
+  sqQuery: (param: queryParam) => Promise<any>,
+  sqInsert: (param: insertParam) => Promise<any>,
+  sqUpdate: (param: updateParam) => Promise<any>,
+  sqDelete: (param: deleteParam) => Promise<any>
 }
 
 declare global {

@@ -29,6 +29,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "electron",
+        "sqlite3",
         ...builtinModules,
       ],
       output: {

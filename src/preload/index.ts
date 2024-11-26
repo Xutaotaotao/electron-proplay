@@ -1,3 +1,4 @@
+import { queryParam,insertParam,updateParam,deleteParam} from "@/common/db";
 import { LOG_TYPE } from "@/common/log";
 import { contextBridge,ipcRenderer } from "electron";
 
@@ -44,7 +45,23 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
   openNewWindowByDefaultHandle: (url:string) => {
     ipcRenderer.invoke('openNewWindowByDefaultHandle',url)
+  },
+  onTestSend: (callback:any) => {
+    ipcRenderer.on('testSend', (_event, arg) => callback(arg))
+  },
+  sqQuery: (param: queryParam) => {
+    return ipcRenderer.invoke('sqQuery', param)
+  },
+  sqInsert: (param: insertParam) => {
+    return ipcRenderer.invoke('sqInsert', param)
+  },
+  sqUpdate: (param: updateParam) => {
+    return ipcRenderer.invoke('sqUpdate', param)
+  },
+  sqDelete: (param: deleteParam) => {
+    return ipcRenderer.invoke('sqDelete', param)
   }
+
 })
 
 

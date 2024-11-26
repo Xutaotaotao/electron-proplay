@@ -1,6 +1,7 @@
 import { BrowserWindow, ipcMain, IpcMainEvent, IpcMainInvokeEvent, shell } from "electron"
 import { Elog, LOG_PARAMS,Log4 } from "@/common/log"
 import { join } from "path"
+import { deleteParam, insertParam, queryParam, sqDelete, sqInsert, sqQuery, sqUpdate, updateParam } from "@/common/db"
 import { getOpenUrl, openWindow } from "../window"
 
 export interface IpcMainWindow {
@@ -96,6 +97,18 @@ const initIpcHandle = () => {
     const newUrl = getOpenUrl(url)
     win.loadURL(newUrl);
   })
+  ipcMain.handle('sqQuery', (event: IpcMainInvokeEvent,param: queryParam): Promise<any> => {
+    return sqQuery(param);
+  });
+  ipcMain.handle('sqInsert', (event: IpcMainInvokeEvent,param: insertParam): Promise<any> => {
+    return sqInsert(param);
+  });
+  ipcMain.handle('sqUpdate', (event: IpcMainInvokeEvent,param: updateParam): Promise<any> => {
+    return sqUpdate(param);
+  });
+  ipcMain.handle('sqDelete', (event: IpcMainInvokeEvent,param: deleteParam): Promise<any> => {
+    return sqDelete(param);
+  });
 };
 
 
