@@ -2,6 +2,7 @@ import { BrowserWindow, Menu, MessageChannelMain, app } from "electron";
 import { join } from "path";
 import { initIpc } from "./ipc";
 import { openWindow } from "./window";
+import { initTestTask } from "@/common/schedule/testTask";
 
 const initMenu = (mainWindow: BrowserWindow) => {
   const menu = Menu.buildFromTemplate([
@@ -61,4 +62,5 @@ const main = async () => {
 
 app.whenReady().then(() => {
   main();
+  initTestTask();
 });
