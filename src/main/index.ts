@@ -62,5 +62,5 @@ const main = async () => {
 
 app.whenReady().then(() => {
   main();
-  initTestTask();
+  // initTestTask();
 });

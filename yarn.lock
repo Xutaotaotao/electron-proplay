@@ -2378,6 +2378,11 @@ keyv@^4.0.0, keyv@^4.5.4:
   dependencies:
     json-buffer "3.0.1"
 
+koffi@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.npmmirror.com/koffi/-/koffi-2.9.2.tgz#7cde7b46f2705bb584b30a5e68d33e6db413eada"
+  integrity sha512-qwKzo4PTN66A0mRcLcMCcay5XS0hAcOLaGijtmP72tJSzH5P4OzufPJ+0uHtL+dqVkvVZMnkeEVQoHYy7KBaVw==
+
 less@^4.2.1:
   version "4.2.1"
   resolved "https://registry.npmmirror.com/less/-/less-4.2.1.tgz#fe4c9848525ab44614c0cf2c00abd8d031bb619a"

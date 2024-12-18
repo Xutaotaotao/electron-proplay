@@ -60,7 +60,16 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
   sqDelete: (param: deleteParam) => {
     return ipcRenderer.invoke('sqDelete', param)
-  }
+  },
+  dylibCallNativeSum: (param:{a:number,b:number}) => {
+    return ipcRenderer.invoke('dylibCallNativeSum', param)
+  },
+  rsNativeSum: (param:{a:number,b:number}) => {
+    return ipcRenderer.invoke('rsNativeSum', param)
+  },
+  rsNativeSubtraction: (param:{a:number,b:number}) => {
+    return ipcRenderer.invoke('rsNativeSubtraction', param)
+  },
 
 })
 

@@ -30,6 +30,7 @@ export default defineConfig({
       external: [
         "electron",
         "sqlite3",
+        "koffi",
         ...builtinModules,
       ],
       output: {

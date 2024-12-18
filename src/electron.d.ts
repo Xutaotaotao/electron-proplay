@@ -23,7 +23,10 @@ export interface IElectronAPI {
   sqQuery: (param: queryParam) => Promise<any>,
   sqInsert: (param: insertParam) => Promise<any>,
   sqUpdate: (param: updateParam) => Promise<any>,
-  sqDelete: (param: deleteParam) => Promise<any>
+  sqDelete: (param: deleteParam) => Promise<any>,
+  dylibCallNativeSum: (param:{a:number,b:number}) => Promise<number>,
+  rsNativeSum: (param:{a:number,b:number}) => Promise<number>,
+  rsNativeSubtraction: (param:{a:number,b:number}) => Promise<number>,
 }
 
 declare global {

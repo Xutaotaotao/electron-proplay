@@ -4,6 +4,7 @@ import {
   CommentOutlined,
   WindowsOutlined,
   DatabaseOutlined,
+  LaptopOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
@@ -31,7 +32,8 @@ const items: MenuItem[] = [
   getItem('首页', '/main', <HomeOutlined />),
   getItem('IPC 通信', '/ipc', <CommentOutlined />),
   getItem('窗口池', '/window', <WindowsOutlined />),
-  getItem('数据库', '/db', <DatabaseOutlined />)
+  getItem('数据库', '/db', <DatabaseOutlined />),
+  getItem('原生模块', '/native', <LaptopOutlined />)
 ];
 
 const App: React.FC = () => {

@@ -3,6 +3,7 @@ import { Elog, LOG_PARAMS,Log4 } from "@/common/log"
 import { join } from "path"
 import { deleteParam, insertParam, queryParam, sqDelete, sqInsert, sqQuery, sqUpdate, updateParam } from "@/common/db"
 import { getOpenUrl, openWindow } from "../window"
+import { dylibCallNativeSum, rsNativeSum,rsNativeSubtraction } from "../native"
 
 export interface IpcMainWindow {
   mainWindow: BrowserWindow,
@@ -108,6 +109,15 @@ const initIpcHandle = () => {
   });
   ipcMain.handle('sqDelete', (event: IpcMainInvokeEvent,param: deleteParam): Promise<any> => {
     return sqDelete(param);
+  });
+  ipcMain.handle('dylibCallNativeSum',(event: IpcMainInvokeEvent,param:{a:number,b:number}):Promise<number> => {
+    return dylibCallNativeSum(param.a,param.b)
+  });
+  ipcMain.handle('rsNativeSum',(event: IpcMainInvokeEvent,param:{a:number,b:number}):Promise<number> => {
+    return rsNativeSum(param.a,param.b)
+  });
+  ipcMain.handle('rsNativeSubtraction',(event: IpcMainInvokeEvent,param:{a:number,b:number}):Promise<number> => {
+    return rsNativeSubtraction(param.a,param.b)
   });
 };
 

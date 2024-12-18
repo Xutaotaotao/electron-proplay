@@ -12,6 +12,7 @@ import PreWindow from "./pages/preWindow";
 import Ipc from "./pages/ipc";
 import Window from './pages/window'
 import Db from './pages/db'
+import Native from "./pages/native";
 import './index.less';
 
 
@@ -49,6 +50,10 @@ const router = createHashRouter([
       {
         path: "db",
         element: <Db />,
+      },
+      {
+        path: "native",
+        element: <Native />,
       },
     ],
   },
