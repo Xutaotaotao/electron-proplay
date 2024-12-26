@@ -1,8 +1,12 @@
-import { BrowserWindow, Menu, MessageChannelMain, app } from "electron";
+import { BrowserWindow, Menu, MessageChannelMain, app, session } from "electron";
 import { join } from "path";
+import { installExtension, REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS } from 'electron-devtools-installer';
 import { initIpc } from "./ipc";
 import { openWindow } from "./window";
 import { initTestTask } from "@/common/schedule/testTask";
+import { Log4 } from "@/common/log";
+import path from "path";
+import os from "os";
 
 const initMenu = (mainWindow: BrowserWindow) => {
   const menu = Menu.buildFromTemplate([
@@ -20,6 +24,25 @@ const initMenu = (mainWindow: BrowserWindow) => {
   ]);
   Menu.setApplicationMenu(menu);
 };
+
+const initElectronDevtoolsInstaller = () => {
+  installExtension([REACT_DEVELOPER_TOOLS,REDUX_DEVTOOLS],{loadExtensionOptions: { allowFileAccess: true }})
+  .then(([react,redux]) => Log4.info(`已添加扩展: ${react.name} ${redux.name}`))
+  .catch((err) => Log4.error('发生错误: ', err));
+}
+
+const initInstallDevtoolsInstallerBySession = () => {
+  const reactDevToolsPath = path.join(
+    os.homedir(),
+    '/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/6.0.1_0'
+  )
+  Log4.info(reactDevToolsPath)
+  session.defaultSession.loadExtension(reactDevToolsPath).then(({name}) => {
+    Log4.info(`已添加扩展: ${name}`)
+  }).catch((err) => {
+    Log4.error('发生错误: ', err)
+  })
+}
 
 const main = async () => {
   const { port1, port2 } = new MessageChannelMain();
@@ -46,7 +69,7 @@ const main = async () => {
     show:false,
   });
 
-  initMenu(mainWindow);
+  // initMenu(mainWindow);
   initIpc({
     mainWindow,
     workWindow,
@@ -61,6 +84,9 @@ const main = async () => {
 };
 
 app.whenReady().then(() => {
+  initInstallDevtoolsInstallerBySession()
+  // initElectronDevtoolsInstaller()
   main();
+
   // initTestTask();
 });
