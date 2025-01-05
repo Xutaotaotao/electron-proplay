@@ -70,7 +70,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
   rsNativeSubtraction: (param:{a:number,b:number}) => {
     return ipcRenderer.invoke('rsNativeSubtraction', param)
   },
-
+  runFbonacciWorker: () => {
+    ipcRenderer.invoke('runFbonacciWorker')
+  },
+  testGetFibonacciNumberWithoutWork: () => {
+    ipcRenderer.invoke('testGetFibonacciNumberWithoutWork')
+  },
 })
 
 

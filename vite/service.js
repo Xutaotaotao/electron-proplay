@@ -107,11 +107,13 @@ const mainDev = {
   },
 };
 
+
 const createViteElectronService = async (options) => {
   const {
     render,
     preload,
     main,
+    worker,
     electronPath,
     sharedOptions = {
       mode: 'dev',
@@ -123,6 +125,11 @@ const createViteElectronService = async (options) => {
 
   try {
     const renderDevServer = await renderDev.createRenderServer({ config: render, sharedOptions });
+    build({
+      configFile: false,
+      ...sharedOptions,
+      ...worker,
+    });
     await preloadDev.createRenderServer(renderDevServer, { config: preload, sharedOptions });
     await mainDev.createMainServer(renderDevServer, { config: main, sharedOptions }, electronPath);
   } catch (err) {

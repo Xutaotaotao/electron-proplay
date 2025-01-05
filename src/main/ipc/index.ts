@@ -4,6 +4,7 @@ import { join } from "path"
 import { deleteParam, insertParam, queryParam, sqDelete, sqInsert, sqQuery, sqUpdate, updateParam } from "@/common/db"
 import { getOpenUrl, openWindow } from "../window"
 import { dylibCallNativeSum, rsNativeSum,rsNativeSubtraction } from "../native"
+import { runFbonacciWorker, testGetFibonacciNumberWithoutWork } from "../worker"
 
 export interface IpcMainWindow {
   mainWindow: BrowserWindow,
@@ -119,6 +120,12 @@ const initIpcHandle = () => {
   ipcMain.handle('rsNativeSubtraction',(event: IpcMainInvokeEvent,param:{a:number,b:number}):Promise<number> => {
     return rsNativeSubtraction(param.a,param.b)
   });
+  ipcMain.handle("runFbonacciWorker",(event: IpcMainInvokeEvent) => {
+    runFbonacciWorker()
+  })
+  ipcMain.handle('testGetFibonacciNumberWithoutWork',() => {
+    testGetFibonacciNumberWithoutWork()
+  })
 };
 
 

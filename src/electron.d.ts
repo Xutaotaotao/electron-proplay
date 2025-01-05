@@ -27,6 +27,8 @@ export interface IElectronAPI {
   dylibCallNativeSum: (param:{a:number,b:number}) => Promise<number>,
   rsNativeSum: (param:{a:number,b:number}) => Promise<number>,
   rsNativeSubtraction: (param:{a:number,b:number}) => Promise<number>,
+  runFbonacciWorker: () => void,
+  testGetFibonacciNumberWithoutWork: () => void,
 }
 
 declare global {

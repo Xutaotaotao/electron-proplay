@@ -13,6 +13,7 @@ import Ipc from "./pages/ipc";
 import Window from './pages/window'
 import Db from './pages/db'
 import Native from "./pages/native";
+import WorkerThreads from "./pages/workerThreads";
 import './index.less';
 
 
@@ -54,6 +55,10 @@ const router = createHashRouter([
       {
         path: "native",
         element: <Native />,
+      },
+      {
+        path: "workerThreads",
+        element: <WorkerThreads />,
       },
     ],
   },
