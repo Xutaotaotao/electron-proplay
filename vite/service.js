@@ -125,13 +125,13 @@ const createViteElectronService = async (options) => {
 
   try {
     const renderDevServer = await renderDev.createRenderServer({ config: render, sharedOptions });
+    await preloadDev.createRenderServer(renderDevServer, { config: preload, sharedOptions });
+    await mainDev.createMainServer(renderDevServer, { config: main, sharedOptions }, electronPath);
     build({
       configFile: false,
       ...sharedOptions,
       ...worker,
     });
-    await preloadDev.createRenderServer(renderDevServer, { config: preload, sharedOptions });
-    await mainDev.createMainServer(renderDevServer, { config: main, sharedOptions }, electronPath);
   } catch (err) {
     console.error(err);
   }

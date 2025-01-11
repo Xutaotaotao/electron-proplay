@@ -47,7 +47,7 @@ export const testGetFibonacciNumberWithoutWork = () => {
   console.time('testGetFibonacciNumberWithoutWork')
   Log4.info('testGetFibonacciNumber start')
   const result1 = getFibonacciNumber(45)
-  Log4.info(`50th Fibonacci Result: ${result1}`)
+  Log4.info(`45th Fibonacci Result: ${result1}`)
 
   const result2 = getFibonacciNumber(10)
   Log4.info(`10th Fibonacci Result: ${result2}`)

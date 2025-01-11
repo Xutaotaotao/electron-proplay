@@ -1,4 +1,4 @@
-import { Button } from "antd"
+import { Button, Space } from "antd"
 import React from "react"
 const WorkerThreads = () => {
 
@@ -12,9 +12,10 @@ const WorkerThreads = () => {
 
   return <div>
     <h1>WorkerThreads</h1>
-    <Button onClick={runFbonacciWorker}>runFbonacciWorker</Button>
-    <Button onClick={testGetFibonacciNumberWithoutWork}>testGetFibonacciNumberWithoutWork</Button>
-
+    <Space>
+      <Button onClick={runFbonacciWorker}>runFbonacciWorker</Button>
+      <Button onClick={testGetFibonacciNumberWithoutWork}>testGetFibonacciNumberWithoutWork</Button>
+    </Space>
   </div>
 }
 

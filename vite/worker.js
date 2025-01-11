@@ -29,8 +29,15 @@ function copyWorkerFiles() {
   })
 }
 
+const sharedResolve = {
+  alias: {
+    "@": path.resolve(__dirname, "../src"),
+  },
+};
+
 // 创建一个简单的构建配置
 export default defineConfig({
+  resolve: sharedResolve,
   plugins: [{
     name: 'copy-worker',
     buildStart() {
@@ -38,6 +45,20 @@ export default defineConfig({
     },
     closeBundle() {
       copyWorkerFiles()
-    }
-  }]
+    },
+  }],
+  build: {
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (
+          warning.code === "MODULE_LEVEL_DIRECTIVE" &&
+          warning.message.includes("use client")
+        ) {
+          return;
+        } else {
+          warn(warning);
+        }
+      },
+    } 
+  }
 })

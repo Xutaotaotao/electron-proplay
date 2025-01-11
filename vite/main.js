@@ -27,10 +27,21 @@ export default defineConfig({
       formats: ["cjs"],
     },
     rollupOptions: {
+      onwarn(warning, warn) {
+        if (
+          warning.code === "MODULE_LEVEL_DIRECTIVE" &&
+          warning.message.includes("use client")
+        ) {
+          return;
+        } else {
+          warn(warning);
+        }
+      },
       external: [
         "electron",
         "sqlite3",
         "koffi",
+        "log4js",
         ...builtinModules,
       ],
       output: {

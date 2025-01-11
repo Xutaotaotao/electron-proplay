@@ -32,6 +32,7 @@ const initElectronDevtoolsInstaller = () => {
 }
 
 const initInstallDevtoolsInstallerBySession = () => {
+  if (process.platform !== 'darwin') return;
   const reactDevToolsPath = path.join(
     os.homedir(),
     '/Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/6.0.1_0'
