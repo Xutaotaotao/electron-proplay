@@ -76,6 +76,12 @@ contextBridge.exposeInMainWorld("electronAPI", {
   testGetFibonacciNumberWithoutWork: () => {
     ipcRenderer.invoke('testGetFibonacciNumberWithoutWork')
   },
+  opneFileDialog: () => {
+    return ipcRenderer.invoke('opneFileDialog')
+  },
+  cryptoFiles: (filesPath:Array<string>) => {
+    return ipcRenderer.invoke('cryptoFiles',filesPath)
+  }
 })
 
 

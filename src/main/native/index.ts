@@ -18,7 +18,7 @@ export const dylibCallNativeSum = (a:number,b:number) => {
 
 
 
-const rsNative =  process.platform === 'darwin' ? require(path.resolve(
+const rsNative =  process.platform === 'darwin' && process.arch === 'x64' ? require(path.resolve(
   __dirname,
   "../../resources/node/rs-native.darwin-x64.node"
 )) : null

@@ -91,3 +91,8 @@ app.whenReady().then(() => {
 
   // initTestTask();
 });
+
+process.on("uncaughtException", (err) => {
+ app.quit();
+ process.exit(1);
+});

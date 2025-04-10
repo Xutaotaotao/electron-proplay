@@ -5,7 +5,7 @@ import { fileURLToPath } from "url"
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url))
 
-function copyWorkerFiles() {
+export function copyWorkerFiles() {
   console.log('Copying worker files...')
   // 目标路径
   const destDir = path.resolve(__dirname, '../dist/worker')

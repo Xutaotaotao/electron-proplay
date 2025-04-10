@@ -1,6 +1,6 @@
 import { spawn } from 'child_process';
 import { build, createServer } from 'vite';
-
+import { copyWorkerFiles } from './worker.js';
 
 let spawnProcess = null;
 
@@ -102,6 +102,15 @@ const mainDev = {
             });
           },
         },
+        {
+          name: 'copy-worker',
+          buildStart() {
+            copyWorkerFiles()
+          },
+          closeBundle() {
+            copyWorkerFiles()
+          },
+        }
       ],
     });
   },
@@ -127,11 +136,6 @@ const createViteElectronService = async (options) => {
     const renderDevServer = await renderDev.createRenderServer({ config: render, sharedOptions });
     await preloadDev.createRenderServer(renderDevServer, { config: preload, sharedOptions });
     await mainDev.createMainServer(renderDevServer, { config: main, sharedOptions }, electronPath);
-    build({
-      configFile: false,
-      ...sharedOptions,
-      ...worker,
-    });
   } catch (err) {
     console.error(err);
   }

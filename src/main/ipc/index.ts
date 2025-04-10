@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, IpcMainEvent, IpcMainInvokeEvent, shell } from "electron"
+import { BrowserWindow, dialog, ipcMain, IpcMainEvent, IpcMainInvokeEvent, shell } from "electron"
 import { Elog, LOG_PARAMS,Log4 } from "@/common/log"
 import { join } from "path"
 import { deleteParam, insertParam, queryParam, sqDelete, sqInsert, sqQuery, sqUpdate, updateParam } from "@/common/db"
@@ -125,6 +125,17 @@ const initIpcHandle = () => {
   })
   ipcMain.handle('testGetFibonacciNumberWithoutWork',() => {
     testGetFibonacciNumberWithoutWork()
+  })
+  ipcMain.handle('opneFileDialog',() => {
+    return new Promise((resolve,reject) => {
+      dialog.showOpenDialog({
+        properties: ['openFile','multiSelections']
+      }).then((result:any) => {
+        resolve(result)
+      }).catch((err:any) => {
+        reject(err)
+      })
+    })
   })
 };
 

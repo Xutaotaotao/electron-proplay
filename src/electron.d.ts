@@ -29,6 +29,8 @@ export interface IElectronAPI {
   rsNativeSubtraction: (param:{a:number,b:number}) => Promise<number>,
   runFbonacciWorker: () => void,
   testGetFibonacciNumberWithoutWork: () => void,
+  opneFileDialog: () => Promise<any>
+  cryptoFiles: (filesPath:Array<string>) => Promise<any>
 }
 
 declare global {

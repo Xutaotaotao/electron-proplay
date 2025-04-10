@@ -32,7 +32,6 @@ export default defineConfig({
         entryFileNames: "[name].cjs",
       }
     },
-    emptyOutDir: true,
     chunkSizeWarningLimit: 2048,
   },
 });
