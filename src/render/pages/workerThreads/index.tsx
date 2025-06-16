@@ -12,10 +12,8 @@ const WorkerThreads = () => {
     window.electronAPI.testGetFibonacciNumberWithoutWork()
   }
 
-  const chooseFiles = () => {
-    window.electronAPI.opneFileDialog().then((res) => {
-      setFileList(res.filePaths)
-    })
+  const runWorkerPool = () => {
+    window.electronAPI.testWorkPool(100)
   }
 
   return <div>
@@ -25,12 +23,7 @@ const WorkerThreads = () => {
       <Button onClick={testGetFibonacciNumberWithoutWork}>testGetFibonacciNumberWithoutWork</Button>
     </Space>
     <h1>WorkerPool</h1>
-    <Button onClick={chooseFiles}>chooseFiles</Button>
-    <div>
-      {
-        fileList?.map((item) => <div key={item}>{item}</div>)
-      }
-    </div>
+    <Button onClick={runWorkerPool}>runWorkerPool 100 </Button>
   </div>
 }
 

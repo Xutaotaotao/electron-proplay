@@ -81,6 +81,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
   },
   cryptoFiles: (filesPath:Array<string>) => {
     return ipcRenderer.invoke('cryptoFiles',filesPath)
+  },
+  testWorkPool: (number:number) => {
+    ipcRenderer.invoke('testWorkPool',number)
   }
 })
 
