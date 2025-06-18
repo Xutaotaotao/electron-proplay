@@ -3,8 +3,9 @@ import { Worker } from "worker_threads";
 import { fileURLToPath } from "url";
 import { dirname, resolve } from "path";
 import { getFibonacciNumber } from "@/worker/fibonacci.work";
-import { WorkerPool } from "./WorkerPool";
+import WorkerPool from "./WorkerPool";
 import { performance } from "perf_hooks";
+import Bluebird from "bluebird";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -61,145 +62,40 @@ export const testGetFibonacciNumberWithoutWork = () => {
 };
 
 export const testWorkPool = (number: number) => {
-  // 生成随机矩阵
-  function generateRandomMatrix(rows: number, cols: number) {
-    return Array.from({ length: rows }, () =>
-      Array.from({ length: cols }, () => Math.floor(Math.random() * 100)),
-    );
-  }
+  const pool = new WorkerPool(
+    resolve(__dirname, "../worker/fibonacci.work.js"),
+    4,
+  );
 
-  // 计算任务模板
-  const tasks = [
-    {
-      type: "matrix",
-      matrixA: generateRandomMatrix(200, 200),
-      matrixB: generateRandomMatrix(200, 200),
+  // 2. 创建测试数据
+  const inputs = [38, 39, 40, 41, 42, 43, 44, 45]; // 斐波那契计算
+
+  // 3. 使用线程池执行任务
+  Bluebird.map(
+    inputs,
+    (n) => {
+      console.time(`Task ${n}`);
+      return pool.run(n).then((result) => {
+        console.timeEnd(`Task ${n}`);
+        console.log(`Worker ${result.pid}: fib(${n}) = ${result.output}`);
+        return result;
+      });
     },
-    {
-      type: "matrix",
-      matrixA: generateRandomMatrix(300, 300),
-      matrixB: generateRandomMatrix(300, 300),
-    },
-    {
-      type: "fibonacci",
-      n: 500000,
-    },
-    {
-      type: "fibonacci",
-      n: 1000000,
-    },
-    {
-      type: "prime",
-      max: 10000000,
-    },
-  ];
-
-  // 扩展任务数量
-  const expandedTasks:any = [];
-  for (let i = 0; i < 20; i++) {
-    expandedTasks.push({ ...tasks[i % tasks.length] });
-  }
-
-  async function main() {
-    const startTime = performance.now();
-
-    // 创建线程池
-    const pool = new WorkerPool(
-      resolve(__dirname, "../worker/matrix-worker.js"),
-      {}, // 无初始数据
-      {
-        size: 4,
-        taskTimeout: 120000, // 2分钟超时
-        idleTimeout: 300000, // 5分钟空闲超时
-      },
-    );
-
-    // 事件监听
-    pool
-      .on("workerCreated", (id) => console.log(`Worker ${id} 已创建`))
-      .on("taskQueued", ({ taskId }) =>
-        console.log(`任务 ${taskId.toString()} 进入队列`),
-      )
-      .on("taskStarted", ({ taskId, workerId }) =>
-        console.log(`任务 ${taskId.toString()} 由 Worker ${workerId} 开始执行`),
-      )
-      .on("taskCompleted", ({ taskId, workerId, duration }) =>
-        console.log(
-          `✅ 任务完成 | Worker ${workerId} | 耗时 ${duration.toFixed(2)}ms`,
-        ),
-      )
-      .on("taskFailed", ({ taskId, workerId, error }) =>
-        console.error(
-          `❌ 任务失败 | Worker ${workerId} | 原因: ${error}`,
-        ),
-      )
-      .on("workerReplaced", (id) => console.warn(`Worker ${id} 已被替换`))
-      .on("workerPermanentFailure", (id) =>
-        console.error(`❗️ Worker ${id} 永久失效`),
-      );
-
-    // 提交任务
-    const promises = expandedTasks.map((task: any, i: number) => {
-      return pool
-        .run({
-          ...task,
-          taskId: i, // 添加任务ID
-          name: `task-${i}-${task.type}`,
-        })
-        .then((result) => {
-          // 处理特别大的结果
-          if (
-            typeof result === "object" &&
-            result !== null &&
-            result.length > 100
-          ) {
-            return { ...result, _truncated: true, length: result.length };
-          }
-          return result;
-        });
-    });
-
-    try {
-      // 等待所有任务完成
-      const results = await Promise.allSettled(promises);
-
-      // 处理结果
-      results.forEach((outcome, index) => {
-        const taskType = expandedTasks[index].type;
-        if (outcome.status === "fulfilled") {
-          const result = outcome.value;
-          if (taskType === "matrix") {
-            console.log(
-              `任务 ${index} (矩阵) 结果维度: ${result.length}x${result[0]?.length}`,
-            );
-          } else {
-            console.log(`任务 ${index} (${taskType}) 结果:`, result);
-          }
-        } else {
-          console.error(`任务 ${index} 失败:`, outcome.reason);
-        }
+    { concurrency: 4 },
+  )
+    .then((results) => {
+      console.log("\n所有任务完成:");
+      results.forEach((r) => {
+        console.log(`fib(${r.input}) = ${r.output} (worker: ${r.pid})`);
       });
 
-      // 性能统计
-      const endTime = performance.now();
-      const poolMetrics = pool.getMetrics();
-      const totalTime = endTime - startTime;
+      // 4. 正常关闭线程池
+      pool.destroy();
+    })
+    .catch((err) => {
+      console.error("任务执行失败:", err);
 
-      console.log("\n======= 执行摘要 =======");
-      console.log(`总执行时间: ${(totalTime / 1000).toFixed(2)}秒`);
-      console.log(`总任务数: ${poolMetrics.totalTasks}`);
-      console.log(`成功任务: ${poolMetrics.completedTasks}`);
-      console.log(`失败任务: ${poolMetrics.failedTasks}`);
-      console.log(`平均任务时间: ${poolMetrics.avgTime.toFixed(2)}ms`);
-      console.log(`活跃工作线程: ${poolMetrics.activeWorkers}`);
-    } catch (error) {
-      console.error("线程池执行失败:", error);
-    } finally {
-      // 关闭线程池
-      await pool.shutdown();
-      console.log("线程池已关闭");
-    }
-  }
-
-  main().catch(console.error);
+      // 5. 强制关闭线程池 (即使有未完成的任务)
+      pool.destroy(true);
+    });
 };
